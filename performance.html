@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/highcharts.js"></script>
+    <script src="./js/layer/layer.js"></script>
+    <script src="./js/chartSpline.js"></script>
+</head>
+<style>
+html,body{
+    height: 100%;
+}
+input,select,option,textarea{
+    outline:none;
+}
+.right-content{
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    overflow: hidden;
+    float: left;
+    background: #efefef;
+    padding-bottom: 15px;
+}
+.title-chunk{
+    width: 100%;
+    line-height: 30px;
+    padding: 15px 0;
+    color: #1ab394;
+    font-size: 16px;
+}
+.charts{
+    height: 260px;
+    background: #fff;
+    margin-bottom: 15px;
+}
+.chartT{
+    width: 100px;
+    padding: 7px 0;
+    background: #1ab394;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    margin-left: -15px;
+}
+.chartChunk{
+    width: 100%;
+    height: 209px;
+}
+.animateBody{
+    width: 100%;
+    height: 100%;
+}
+</style>
+<body>
+    <div class="right-content">
+        <div class="animateBody animated fadeInRight">
+            <div class="col-sm-12">
+                <div class="title-chunk">性能对比</div>
+                <div class="col-sm-12 charts">
+                    <div class="chartT">数据库耗时</div>
+                    <div id="chartOne" class="chartChunk" data-title="" data-x="时间" data-y="数值"  chart-type="spline"></div>
+                </div>
+                <div class="col-sm-12 charts" style="height:430px">
+                    <div class="chartT">事件</div>
+                    <div id="chartTwo" class="chartChunk" data-title="" data-x="事件" data-y="耗时"  chart-type="column" style="height:379px"></div>
+                </div>
+                <div class="col-sm-12 charts">
+                    <div class="chartT">数据库活跃线程</div>
+                    <div id="chartThree" class="chartChunk" data-title="" data-x="时间" data-y="数值"  chart-type="spline"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="container"></div>
+</body>
+<script>
+$(document).ready(function(){
+    $("body").attr("data-frame","performance");
+    //动态加载图表
+    var index = layer.load(2, {shade: false});
+    function ajaxData(){
+        var page={};
+        page.pageSize=40;
+        $.ajax({
+            type:'POST',
+            url:'http://192.168.1.241:8080/db/status/list',
+            dataType:'json',
+            data:JSON.stringify(page),
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+                    var timeConsumDataArr=[];
+                    var timeConsumTimeArr=[];
+                    var threadDataArr=[];
+                    var QPSDataArr=[];
+                    var readFunctionDataArr=[];
+                    var scale=[];
+                    var dates;
+                    if(formatDate(data.datalist[0].createdAt,1)==formatDate(data.datalist[data.datalist.length-1].createdAt,1)){
+                        dates=formatDate(data.datalist[0].createdAt,1);
+                    }else{
+                        dates=(formatDate(data.datalist[0].createdAt,1)+"-"+formatDate(data.datalist[data.datalist.length-1].createdAt,1));
+                    }
+                    for(var i=0;i<data.datalist.length;i++){
+                        var datas=data.datalist[i];
+                        timeConsumTimeArr.push(datas.rtTime);
+                        threadDataArr.push(datas.threadsRunning);
+                        QPSDataArr.push(datas.innodbRowsRead);
+                        readFunctionDataArr.push(datas.innodbRowsInserted)
+                        scale.push(formatDate(datas.createdAt,2))
+                    }
+                    var dataJson1=[{
+                            name:'数据库耗时 ('+dates+')',
+                            data:timeConsumTimeArr,
+                            color:'#ed793a',
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            lineWidth:2
+                        }]
+                    var dataJson2=[{
+                            name:'活跃线程 ('+dates+')',
+                            data:threadDataArr,
+                            color:'#944457',
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            lineWidth:2
+                        }]
+                    chartSpline1('#chartOne',scale,dataJson1,dates);
+                    chartSpline1('#chartThree',scale,dataJson2,dates);
+                }
+                layer.close(index);
+            },
+            error:function(data){
+                layer.msg("服务获取失败["+data.errorCode+"]", {
+                    offset: 't',
+                    anim: 0
+                });
+                layer.close(index);
+            }
+        });
+    }
+    ajaxData();
+    //时间格式变化 if(sd==1){返回 年月日}else if(sd==2){返回 时分秒}else if(sd==3){返回 时分}else if(sd==4){返回 年月日时分秒}
+    function formatDate(str,sd){
+        var date = new Date(str),Y,M,D,h,m,s;
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = (date.getDate()>=10?date.getDate():"0"+date.getDate()) + ' ';
+        h = (date.getHours()<=0?'00':(date.getHours()>=10?date.getHours():"0"+date.getHours())) + ':';
+        m = (date.getMinutes()<=0?'00':(date.getMinutes()>=10?date.getMinutes():"0"+date.getMinutes())) + ':';
+        s = (date.getSeconds()<=0?'00':(date.getSeconds()>=10?date.getSeconds():"0"+date.getSeconds()));
+        if(sd==1){
+            return (Y+M+D);
+        }else if(sd==2){
+            return (h+m+s);
+        }else if(sd==3){
+            return (h+m);
+        }else if(sd==4){
+            return (Y+M+D+h+m+s);
+        }
+    }
+    function columnAjax(){
+        var index1 = layer.load(2, {shade: false});
+        $.ajax({
+            url:'http://192.168.1.241:8080/calc/power/query/event',
+            type:"post",
+            dataType:'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+                    var dataArr=[];
+                    var dataarr=[];
+                    var dataJ;
+                    for(var i=0;i<data.datalist.length;i++){
+                        var Data=[];
+                        var datas=data.datalist[i];
+                        Data.push(datas.id+''+datas.name);
+                        Data.push(datas.timeCost);
+                        dataarr.push(Data);
+                    }
+                    var dataJ=[{
+                        name:'aaa',
+                        data:dataarr,
+                    }]
+                    columnS('#chartTwo',dataJ)
+                    layer.close(index1);
+                }
+            },
+            error:function(data){
+                layer.msg("服务获取失败["+data.errorCode+"]", {
+                    offset: 't',
+                    anim: 0
+                });
+                layer.close(index1);
+            }
+        })
+    }
+    columnAjax()
+})
+</script>
+</html>

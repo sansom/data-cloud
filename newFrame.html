@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/laydates.css" rel="stylesheet">
+    <link href="./css/laydate.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/layer/layer.js"></script>
+    <script src="./js/laydate.js"></script>
+    <script src="./js/Frame.js"></script>
+</head>
+<style>
+    html,body{
+        height: 100%;
+    }
+    .btn.focus, .btn:focus, .btn:hover{
+        color:#fff;
+    }
+    .right-content{
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+        overflow: hidden;
+        background: #efefef;
+        padding-bottom: 15px;
+    }
+    .frameTitle{
+        display: block;
+        width: 200px;
+        height: 30px;
+        color: #1ab394;
+        font-size: 16px;
+        line-height: 30px;
+        float:left;
+    }
+    .title,.content{
+        background: #fff;
+        margin-top: 15px;
+        line-height: 30px;
+    }
+    .title p,.content p{
+        margin-bottom: 0;
+    }
+    .div-chunk{
+        height: 100%;
+        background: #fff;
+        padding: 15px 0;
+    }
+    .right-chunk{
+        height: 831px;
+        padding-top: 15px
+    }
+    .container{
+        width: 100%;
+        height: 100%;
+    }
+    .buttonBtn{
+        margin-top: 15px;
+        padding: 0;
+    }
+    .topBtn{
+        margin: 15px 0;
+        height: auto;
+        overflow: hidden;
+    }
+    .topBtn div{
+        float: right;
+        width: auto;
+        height: 100%;
+    }
+    .topBtn .btn{
+        float: left;
+        border-radius: 0;
+        background: #1ab394;
+        color: #fff
+    }
+    .div-chunk-right{
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        padding:10px 0 15px;
+        max-height: 815px;
+        overflow: auto;
+        min-height: 100%;
+    }
+    .control-label{
+        width: 60px;
+        line-height:34px;
+        min-width: 60px;
+        float: left;
+        font-size: 12px;
+    }
+    .small-logo{
+        height: 120px;
+        color: #fff;
+        position: relative;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .small-logo span{
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+    }
+    .table td,.table th{
+        text-align: center;
+        color: #676a6c;
+        font-size: 12px;
+        width: 50%;
+        word-break: break-all;
+    }
+    .newSeek{
+        width: 100%;
+        height: 100%;
+        background: #1ab394;
+        color: #fff;
+    }
+    .newSeek:hover{
+        color: #fff;
+    }
+    .animateBody{
+        width: 100%;
+        height: 100%;
+    }
+    .form-control{
+        font-size: 12px;
+    }
+    .mark{
+        background:url('images/mark.png');
+        background-size: 100% 100%;
+    }
+    .dataTotal{
+        background:url('images/dataTotal.png');
+        background-size: 100% 100%;
+    }
+    .formOrganization{
+        background:url('images/formOrganization.png');
+        background-size: 100% 100%;
+    }
+    .dataTopo{
+        background:#fff url("./images/grid.png");
+        padding:0;
+        height:696px;
+        overflow: hidden;
+        box-shadow:0 0 4px rgba(0,0,0,0.5);
+        position: relative;
+    }
+    .table-title{
+        width: 100%;
+        min-height: 20px;
+        line-height: 20px;
+        font-size: 14px;
+        color: #333;
+        border-bottom:1px solid #ddd;
+        margin-bottom: 15px;
+        padding:0 15px 10px;
+    }
+    .table-title small{
+        font-size: 12px;
+        color: #999;
+        float: right;
+    }
+    .canvasTitle{
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background:#1ab394;
+        color: #fff;
+    }
+</style>
+<body>
+    <div class="right-content">
+        <div class="animateBody">
+            <div class="col-sm-12 topBtn">
+                <span class="frameTitle">新架构</span>
+                <div>
+                    <button class="btn" onclick="SQLchart(this,'old')" style="margin-right:20px;">性能指标</button>
+                    <button class="btn" onclick="newDBTopo(this,'new')">DB拓扑</button>
+                </div>
+            </div>
+            <div class="col-sm-7 left-chunk animated fadeInLeft" style="padding-right:0;height:831px;">
+                <div class="col-sm-12 dataTopo">
+                    <canvas class="canvas" id="canvas">您的浏览器版本过低，请升级您的浏览器</canvas>
+                    <div class="canvasTitle">新框架图</div>
+                </div>
+                <div class="col-sm-12 buttonBtn">
+                    <div class="col-sm-4" style="padding-left:0;">
+                        <div class="div-chunk small-logo mark" data-tar="mark" onclick="Pop(this)"><span>慢SQL查询</span></div>
+                    </div>
+                    <div class="col-sm-4" style="padding: 0;">
+                        <div class="div-chunk small-logo dataTotal" data-tar="dataTotal" onclick="Pop(this)"><span>表数据总量</span></div>
+                    </div>
+                    <div class="col-sm-4" style="padding-right:0">
+                        <div class="div-chunk small-logo formOrganization" data-tar="formOrganization" onclick="Pop(this)"><span>表结构</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5 right-chunk animated fadeIn" style="padding-top:0">
+                <div class="div-chunk-right">
+                    <div class="table-title">业务查询&nbsp;&nbsp;&nbsp;&nbsp;<small class="table-time"></small></div>
+                    <div style="padding:15px;">
+                        <div class="col-sm-12" style=“height:100%”>
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-content" style="border: none;">
+                                    <div class="form-horizontal">
+                                        <div class="form-group">
+                                            <label class="control-label" style="padding:0">时间:</label>
+                                            <div class="col-sm-10">
+                                                <input placeholder="开始时间" class="form-control layer-date" id="start" style="width:45%;float:left" name="startTime">
+                                                <input placeholder="结束时间" class="form-control layer-date" id="end" style="width:45%;float:right" name="endTime">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" style="padding:0">地区:</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="province" placeholder="请选择省份" name="account" style="width:45%;float:left">
+                                                    <option value="">全部</option>
+                                                </select>
+                                                <button class="btn newSeek" style="width:45%;float:right;border-radius:0;outline:none;">搜索</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-chunk">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>总数</th>
+                                        <th>地区</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-tbody">
+                                </tbody>
+                            </table>
+                            <div class="table-responsive" id="test" style="margin-top:15px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById("canvas").width=$(".dataTopo").width();
+    document.getElementById("canvas").height=$(".dataTopo").height();
+    $("body").attr("data-frame","newFrame");
+</script>
+<script src="./js/jtopo-0.4.8-min.js"></script>
+<script src="./js/Topo.js"></script>
+</html>

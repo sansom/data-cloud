@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight" style="height: auto;overflow:hidden">
+
+    </div>
+</body>
+<script>
+    $(function(){
+        var type=$('body', parent.document).attr("data-type");
+        if(type=='old'){
+            $(".wrapper").text("old")
+        }else if(type=='new'){
+            $(".wrapper").text("new")
+        }
+    })
+</script>
+</html>

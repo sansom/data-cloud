@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/layer/layer.js"></script>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight" style="height: auto;overflow:hidden">
+        <div class="col-sm-12" style="background: #fff;padding: 15px;font-size: 12px;"></div>
+    </div>
+</body>
+<script>
+    var dataOld="<p>CREATE TABLE `pg_bill_event` (</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`id` bigint(20) NOT NULL DEFAULT '0' COMMENT 'PK, 序列号#5位数billcodehash',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`biz_code` varchar(200) NOT NULL DEFAULT '' COMMENT '唯一索引，格式bill_code#bill_code_hash#op_site_id#bill_return',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bill_code` varchar(20) NOT NULL DEFAULT '' COMMENT '运单号，根据特定hash值分表',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bill_code_hash` int(11) NOT NULL DEFAULT '0' COMMENT '根据bill_code算出的hash值',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_date` datetime DEFAULT NULL COMMENT '操作时间',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bill_event_type` int(11) NOT NULL DEFAULT '0' COMMENT '事件结算类型，101：中转费，102：扫描费，103：派件费',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bill_sub_type` int(11) NOT NULL DEFAULT '0' COMMENT '收费关系类型，1：网点收业务员，2：中心收网点，3：中心收中心',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`express_type` int(11) DEFAULT NULL COMMENT '快递类型，1：班车件、2：航空件、3：市内件、4：江浙件、5：省内件、6：同城件、7：铁路件',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_site_group_id` bigint(20) DEFAULT NULL COMMENT '操作网点组编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_site_id` bigint(20) NOT NULL COMMENT '操作网点ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_site_code` varchar(64) DEFAULT '' COMMENT '操作网点编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_site_name` varchar(64) NOT NULL DEFAULT '' COMMENT '操作网点名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_site_province_code` varchar(64) NOT NULL DEFAULT '' COMMENT '操作网点所属省份ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_man_id` bigint(20) DEFAULT NULL COMMENT '操作人ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_man_code` varchar(64) DEFAULT '' COMMENT '操作人编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`op_man_name` varchar(64) NOT NULL DEFAULT '' COMMENT '操作人姓名',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`receiving_id` bigint(20) DEFAULT NULL COMMENT '收款方ID（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`receiving_code` varchar(64) DEFAULT '' COMMENT '收款方编号（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`receiving_name` varchar(64) DEFAULT '' COMMENT '收款方名称（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_id` bigint(20) DEFAULT '0' COMMENT '上一站ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_code` varchar(64) DEFAULT '' COMMENT '上一站编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_name` varchar(64) DEFAULT '' COMMENT '上一站名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_group_id` bigint(20) DEFAULT NULL COMMENT '上一站组ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_province_code` varchar(64) DEFAULT '' COMMENT '上一站所属省份ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`pre_site_finance_id` bigint(20) DEFAULT NULL COMMENT '上一站财务中心id，用于.net客户端查询',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`payer_id` bigint(20) DEFAULT NULL COMMENT '付款方ID（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`payer_code` varchar(64) DEFAULT '' COMMENT '付款方编号（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`payer_name` varchar(64) DEFAULT '' COMMENT '付款方名称（结算网点/中心）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`site_bag_no` bigint(20) DEFAULT NULL COMMENT '网点建包号（与计算费用相关）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`owner_bag_no` bigint(20) DEFAULT NULL COMMENT '所属包号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`use_site_id` bigint(20) DEFAULT NULL COMMENT '单号使用网点ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`stard_weight` bigint(20) DEFAULT NULL COMMENT '标准重量，单位克',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`charge_weight` bigint(20) DEFAULT NULL COMMENT '结算重量，单位克',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`goods_type` varchar(64) DEFAULT '0' COMMENT '物品类别',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`class_type` int(11) DEFAULT '0' COMMENT '班次类型',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dispatch_site_id` bigint(20) DEFAULT NULL COMMENT '目的地ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dispatch_site_code` varchar(64) DEFAULT '' COMMENT '目的地网点编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dispatch_site_name` varchar(64) DEFAULT '' COMMENT '目的地网点名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`dispatch_site_province_code` varchar(64) DEFAULT '' COMMENT '目的地所属省份ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sign_site_id` bigint(20) DEFAULT NULL COMMENT '签收网点ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sign_site_name` varchar(64) DEFAULT '' COMMENT '签收网点名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sign_site_province_code` varchar(64) DEFAULT '' COMMENT '签收网点所属省份',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`sign_date` datetime DEFAULT NULL COMMENT '签收时间',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bl_return` int(11) NOT NULL DEFAULT '0' COMMENT '是否退件（1：是，0：否）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`bl_bag` int(11) NOT NULL DEFAULT '0' COMMENT '是否包号（1：是，0：否）',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`ext_data` varchar(8000) DEFAULT '' COMMENT '扩展信息JSON串',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`remark` varchar(4000) DEFAULT '' COMMENT '备注，用来记录计费失败原因等关键信息',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`retry_times` int(11) DEFAULT '0' COMMENT '重试计费次数，默认0，重实验一次加1并递延execute_date, 失败5次后不再进行计费，计费状态更新为计费出错',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`execute_date` datetime DEFAULT NULL COMMENT '计划计费时间，默认为创建时间，当出错需要递延计费时调整',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`status` int(11) NOT NULL DEFAULT '0' COMMENT '状态，0：等待计算，1：计算完成，2：待重新计算， 3:数据等待完善， 5:计费失败',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`version` int(11) NOT NULL DEFAULT '0' COMMENT '版本，控制并发，每次修改后加1',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`gmt_create` datetime NOT NULL COMMENT '创建时间',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`create_by_id` bigint(20) NOT NULL COMMENT '创建人编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`create_by_name` varchar(64) NOT NULL DEFAULT '' COMMENT '创建人名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`create_by_site_id` bigint(20) NOT NULL COMMENT '创建网点ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`create_by_site_name` varchar(64) NOT NULL DEFAULT '' COMMENT '创建网点名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`gmt_modified` datetime NOT NULL COMMENT '修改时间',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`modify_by_id` bigint(20) NOT NULL COMMENT '修改人编号',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`modify_by_name` varchar(64) NOT NULL DEFAULT '' COMMENT '修改人名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`modify_by_site_id` bigint(20) NOT NULL COMMENT '修改网点ID',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`modify_by_site_name` varchar(64) NOT NULL DEFAULT '' COMMENT '修改网点名称',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`weight_calculate_count` int(4) DEFAULT '0',</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`trace_flag` varchar(512) DEFAULT NULL,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRIMARY KEY (`id`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNIQUE KEY `pg_bill_event_biz_code_uindex` (`biz_code`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `auto_shard_key_bill_code_hash` (`bill_code_hash`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `idx_bill_event_status` (`status`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `idx_bill_event_stard_weight` (`stard_weight`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `idx_bill_event_charge_weight` (`charge_weight`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `pg_bill_event_weight_calculate_count` (`weight_calculate_count`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `idx_bill_event_gmt_create` (`gmt_create`),</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KEY `pg_bill_event__index_billcode` (`bill_code`)</p><p>) ENGINE=InnoDB DEFAULT CHARSET=utf8</p>"
+    $(function(){
+        var type=$('body', parent.document).attr("data-tar");
+        if(type=="mark"){
+            Datas('http://192.168.1.241:8080/db/status/slow/query');
+        }else if(type=="dataTotal"){
+            Datas('http://192.168.1.241:8080/calc/power/count/query');
+        }else if(type=="formOrganization"){
+            $(".wrapper div").html(dataOld)
+        }
+        function Datas(url){
+            var index = layer.load(2, {shade: false});
+            $.ajax({
+                type:'POST',
+                url:url,
+                dataType:'json',
+                contentType:"application/json; charset=utf-8",
+                success:function(data){
+                    var datas='';
+                    if(data.success){
+                        if(type=="mark"){
+                            var obj=data.datalist;
+                            for(var key in obj){
+                                for(var k in obj[key]){
+                                    datas+=k+":"+obj[key][k]+", "
+                                }
+                            }
+                            $(".wrapper div").text(datas)
+                        }else{
+                            $(".wrapper div").text("表数据共量："+data.data);
+                        }
+                    }else{
+                        layer.msg("服务获取失败["+data.errorCode+"]", {
+                            offset: 't',
+                            anim: 0
+                        });
+                    }
+                    layer.close(index);
+                },
+                error:function(data){
+                    layer.msg("服务获取失败["+data.errorCode+"]", {
+                        offset: 't',
+                        anim: 0
+                    });
+                    layer.close(index);
+                }
+            });
+        }
+    })
+</script>
+</html>

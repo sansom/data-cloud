@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>数据云</title>
+    <meta name="keywords" content="数据云">
+    <meta name="description" content="数据云">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/layer/layer.js"></script>
+</head>
+<style>
+    input,select,option,textarea{
+        outline:none;
+    }
+    input:focus,select:focus{
+        border-color:#1ab394!important;
+    }
+</style>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight" style="height: auto;overflow:hidden">
+        <div class="ibox-content" style="display: block;height: auto;overflow:hidden">
+            <div class="col-sm-12" style="height:100%">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content" style="border: none;">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">数据源名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="sourceName" placeholder="请输入数据源名" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">IP地址</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="sourceUrl" placeholder="请输入IP地址" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">DB名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="sourceDbname" placeholder="请输入DB名称" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">数据库类型</label>
+                                <div class="col-sm-10" style="height:30px;">
+                                    <select class="form-control m-b" id="sourceType" name="account" style="height:30px;">
+                                        <option>MySQL</option>
+                                        <option>Oracle</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">用户名</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="sourceUser" placeholder="请输入用户名" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" id="sourcePwd" placeholder="请输入密码" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary" style="width:45%;" id="assign">确定</button>
+                    <button type="button" class="btn btn-danger" style="width:45%;float:right;" id="close">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $('#close').bind('click',function(){
+        window.parent.closeAddData();
+        // window.parent.renewAjax();
+    });
+
+
+    // $("#assign").bind('click',function(){
+    //     var sourceName=$("#sourceName").val();
+    //     var sourceUrl=$("#sourceUrl").val();
+    //     var sourceDbname=$("#sourceDbname").val();
+    //     var sourceType=$("#sourceType option:selected").text();
+    //     var sourceUser=$("#sourceUser").val();
+    //     var sourcePwd=$("#sourcePwd").val();
+    //     var sourceJson={
+    //         'sourceName':sourceName,
+    //         'sourceUrl':sourceUrl,
+    //         'sourceDbname':sourceDbname,
+    //         'sourceType':sourceType,
+    //         'sourceUser':sourceUser,
+    //         'sourcePwd':sourcePwd,
+    //     };
+    //     addRUMDefine(sourceJson)
+    // });
+    // //添加RUM定义
+    // function addRUMDefine(arr){
+    //     $.ajax({
+    //         type:'POST',
+    //         url:'http://data.pamirs.top:8085/config/datasource/add',
+    //         dataType:'json',
+    //         data:JSON.stringify(arr),
+    //         contentType:"application/json; charset=utf-8",
+    //         success:function(data){
+    //             if(data.success){
+    //                 layer.msg('保存成功', {
+    //                     offset: 't',
+    //                     anim: 0
+    //                 });
+    //                 setTimeout(window.parent.closeData,1000);
+    //             }else{
+
+    //             }
+    //         },
+    //         error:function(data){
+    //             layer.msg(''+data.errorMessage+":"+data.errorCode+"\n"+data.errorName, {
+    //                 offset: 't',
+    //                 anim: 0
+    //             });
+    //         }
+    //     });
+    // }
+
+</script>
+</body>
+</html>

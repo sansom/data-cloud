@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="数据云">
+    <meta name="description" content="数据云">
+    <title>pamirs - 数据云</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./font/demo.css">
+    <link rel="stylesheet" href="./font/iconfont.css">
+    <script src="./js/jquery.min.js"></script>
+</head>
+<style>
+html,body{
+    height: 100%;
+    overflow: hidden;
+}
+a:hover{
+    text-decoration:none;
+}
+a:focus{
+    text-decoration:none;
+}
+input,select,option,textarea{
+    outline:none;
+}
+.new-body{
+    height: 100%;
+    margin-left: 200px;
+}
+.logo-top{
+    width: 200px;
+    line-height: 50px;
+    background: rgb(47,64,80) url("./images/datalogo.png") no-repeat center center;
+    background-size:70% 55%;
+    font-size: 22px;
+    border-bottom: 1px solid #222;
+    float: left;
+    height: 50px;
+    text-align: center;
+    cursor: pointer;
+    transition:background 300ms;
+}
+.logo-top:hover{
+    background-color: #262f38;
+}
+.left-nav{
+    width: 200px;
+    height: 100%;
+    margin-left: -200px;
+    float: left;
+    background: #2f4050;
+    position: relative;
+    color:#fff;
+    overflow: hidden;
+}
+.open-nav,.close-nav{
+    width: 100%;
+    height: 100%;
+}
+.close-nav{
+    display: none;
+}
+.list{
+    background: rgb(47,64,80);
+    list-style: none;
+    transition:background 300ms;
+}
+.list a{
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    padding-left: 40px;
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+}
+.list a i{
+    display: inline-block;
+    width: 25px;
+    height: 20px;
+    text-align: left;
+    /*line-height: 20px;*/
+}
+.nav-active{
+    display: block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    float: left;
+    position: relative;
+}
+.openBtn{
+    display: block;
+    width: 30px;
+    text-align: center;
+    height: 24px;
+    line-height: 24px;
+    color: #1ab394;
+    position: absolute;
+    top: 13px;
+    left: 10px;
+}
+.right-content{
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    overflow: hidden;
+    float: left;
+    background: #efefef;
+}
+.listShow{
+    width: 200px;
+    height: auto;
+    overflow: hidden;
+}
+.tab{
+    display:block;
+    height: 100%;
+}
+iframe{
+    width: 100%;
+    height: 100%;
+}
+.btnTop{
+    width: 100%;
+    height: 50px;
+    background: #fff;
+}
+.search{
+    margin: 10px 0;
+    height: 30px;
+    border: 1px solid #fff;
+    float: left;
+    font-size: 16px;
+    color: #666;
+}
+</style>
+<body>
+    <div class="new-body">
+        <div class="left-nav">
+            <div class="open-nav">
+                <div class="logo-top"></div>
+                <ul class="listShow">
+                    <li class="list active"><a href="#oldFrame"><i class="iconfont">&#xe61d;</i>旧框架</a></li>
+                    <li class="list"><a href="#newFrame"><i class="iconfont">&#xe747;</i>新框架</a></li>
+                    <li class="list"><a href="#performance"><i class="iconfont">&#xe6eb;</i>性能测试</a></li>
+                    <li class="list"><a href="#frameEvolution"><i class="iconfont">&#xe60b;</i>框架演变</a></li>
+                    <li class="list"><a href="#systemManagement"><i class="iconfont">&#xe6d0;</i>系统管理</a></li>
+                    <li class="list"><a href="#CapacityAssessment"><i class="iconfont">&#xe61e;</i>容量评估</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="close-nav"></div>
+        <div class="right-content">
+            <div class="btnTop">
+                <div class="nav-active"><span class="openBtn">≡</span></div>
+                <input type="text" class="search col-sm-10" placeholder="请在此处搜索...">
+            </div>
+            <div class="tab"></div>
+        </div>
+    </div>
+</body>
+<script>
+$(function(){
+    var wh=$(window).height()-50;
+    $(".tab").css({height:wh});
+    $(".logo-top").click(function(){
+        $(".tab").empty();
+        $("<iframe src='oldFrame.html' frameborder='0' id='oldFrame' name='oldFrame'></iframe>").appendTo(".tab");
+        $(".list").css({background:"#2f4050"}).eq(0).css({background:"#1ab394"});
+    })
+    $(".list").hover(function(){
+        if($(this).hasClass("active")){
+            $(this).css({background:"#1ab394"})
+            return;
+        }
+        $(this).css({background:"#262f38"});
+    },function(){
+        if($(this).hasClass("active")){
+            $(this).css({background:"#1ab394"})
+            return;
+        }
+        $(this).css({background:"#2f4050"});
+    })
+    $(".list a").click(function(){
+        $(".tab").empty();
+        var id=$(this).attr("href");
+        $(".list").removeClass("active").css({background:"#2f4050"});
+        $(this).parent().addClass("active").css({background:"#1ab394"});
+        var newID=id.split("#")
+        $("<iframe src='"+newID[1]+".html' frameborder='0' id='"+newID[1]+"' name='"+newID[1]+"'></iframe>").appendTo(".tab")
+    })
+    $(".search").focus(function(){
+        $(this).css({border:"1px solid #1ab394",boxShadow:"none"});
+    }).blur(function(){
+        $(this).css({border:"1px solid #fff"});
+    })
+    window.onload=function(){
+        $(".tab").empty();
+        var URL=window.location.href;
+        var Url=URL.split("#")
+        if(Url.length>1){
+            $("<iframe src='"+Url[1]+".html' frameborder='0' id='"+Url[1]+"' name='"+Url[1]+"'></iframe>").appendTo(".tab")
+            for(var i=0;i<$(".list").length;i++){
+                if($(".list").eq(i).find("a").attr("href")=="#"+Url[1]){
+                    $(".list").removeClass("active").css({background:"#2f4050"}).eq(i).addClass("active").css({background:"#1ab394"});
+                }
+            }
+        }else{
+            $("<iframe src='oldFrame.html' frameborder='0' id='oldFrame' name='oldFrame'></iframe>").appendTo(".tab");
+            $(".list").removeClass("active").css({background:"#2f4050"}).eq(0).addClass("active").css({background:"#1ab394"});
+        }
+    }
+    var active=true;
+    $(".openBtn").click(function(){
+        if(active){
+            active=false;
+            $(".listShow,.logo-top").animate({opacity:0},300);
+            setTimeout(function(){$(".listShow").css({display:"none"});},500);
+            $(".left-nav").animate({width:0,marginLeft:0},500);
+            $(".new-body").animate({marginLeft:0},500);
+        }else{
+            active=true;
+            $(".listShow,.logo-top").animate({opacity:1},700).css({display:"block"});
+            $(".left-nav").animate({width:"200px",marginLeft:"-200px"},500);
+            $(".new-body").animate({marginLeft:"200px"},500);
+        }
+    })
+})
+</script>
+</html>

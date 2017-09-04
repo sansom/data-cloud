@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/laydates.css" rel="stylesheet">
+    <link href="./css/laydate.css" rel="stylesheet">
+    <link href="./css/laypage.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/highcharts.js"></script>
+    <script src="./js/layer/layer.js"></script>
+    <script src="./js/chartSpline.js"></script>
+</head>
+<style>
+    html,body{
+        height: 100%;
+    }
+    input,select,option,textarea{
+        outline:none;
+    }
+    .right-content{
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+        overflow: hidden;
+        background: #efefef;
+        padding-bottom: 15px;
+    }
+    .chart{
+        padding: 0 15px 0 0;
+        height: 360px;
+        margin-top: 15px;
+    }
+    .div-chunk{
+        height: 100%;
+        background: #fff;
+        padding: 15px 0;
+    }
+    .container{
+        width: 100%;
+        height: 100%;
+    }
+    .animateBody{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<body>
+    <div class="right-content">
+        <div class="animateBody">
+            <div class="col-sm-12 left-chunk animated fadeInLeft">
+                <div class="col-sm-12" style="padding:0">
+                    <div class="col-sm-6 chart">
+                        <div class="div-chunk">
+                            <div id="chart1" class="container" data-title="数据库耗时" data-x="时间" data-y="数值" chart-type="spline"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 chart" style="padding-right:0">
+                        <div class="div-chunk">
+                            <div id="chart2" class="container" data-title="活跃线程" data-x="时间" data-y="数值" chart-type="spline"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 chart">
+                        <div class="div-chunk">
+                            <div id="chart3" class="container" data-title="QPS" data-x="时间" data-y="数值" chart-type="spline"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 chart" style="padding-right:0">
+                        <div class="div-chunk">
+                            <div id="chart4" class="container" data-title="读取函数" data-x="时间" data-y="数值" chart-type="spline"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+$(document).ready(function() {
+    //动态加载图表
+    var index = layer.load(2, {shade: false});
+    var istrue=true;
+    ajaxData();
+    var as=true;
+    setInterval(function(){
+        if(!istrue){
+            ajaxData();
+        }
+    },10000)
+    function ajaxData(){
+        $.ajax({
+            type:'POST',
+            url:'http://192.168.1.241:8080/db/status/list',
+            dataType:'json',
+            async: false,
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                if(data.success){
+                    var timeConsumDataArr=[];
+                    var timeConsumTimeArr=[];
+                    var threadDataArr=[];
+                    var QPSDataArr=[];
+                    var readFunctionDataArr=[];
+                    var scale=[];
+                    var dates;
+                    if(formatDate(data.datalist[0].createdAt,1)==formatDate(data.datalist[data.datalist.length-1].createdAt,1)){
+                        dates=formatDate(data.datalist[0].createdAt,1);
+                    }else{
+                        dates=(formatDate(data.datalist[0].createdAt,1)+"-"+formatDate(data.datalist[data.datalist.length-1].createdAt,1));
+                    }
+                    for(var i=0;i<data.datalist.length;i++){
+                        var datas=data.datalist[i];
+                        timeConsumTimeArr.push(datas.rtTime);
+                        threadDataArr.push(datas.threadsRunning);
+                        QPSDataArr.push(datas.innodbRowsRead);
+                        readFunctionDataArr.push(datas.innodbRowsInserted)
+                        scale.push(formatDate(datas.createdAt,2))
+                    }
+                    var dataJson1=[
+                        {
+                            name:'数据库耗时 ('+dates+')',
+                            data:timeConsumTimeArr,
+                            color:'#ed793a',
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            lineWidth:2
+                        }
+                    ]
+                    var dataJson2=[
+                        {
+                            name:'活跃线程 ('+dates+')',
+                            data:threadDataArr,
+                            color:'#944457',
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            lineWidth:2
+                        }
+                    ]
+                    var dataJson3=[
+                        {
+                            name:'QPS ('+dates+')',
+                            data:QPSDataArr,
+                            color:'#306fa0',
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            lineWidth:2
+                        }
+                    ]
+                    var dataJson4=[
+                        {
+                            name:'读取函数 ('+dates+')',
+                            data:readFunctionDataArr,
+                            marker:{//线上数据点
+                                radius:0,
+                                lineWidth:0,
+                            },
+                            color:'#269c79',
+                            lineWidth:2
+                        }
+                    ]
+                    chartSpline1('#chart1',scale,dataJson1,dates);
+                    chartSpline1('#chart2',scale,dataJson2,dates);
+                    chartSpline1('#chart3',scale,dataJson3,dates);
+                    chartSpline1('#chart4',scale,dataJson4,dates);
+                }
+                layer.close(index);
+                istrue=false;
+                as=true;
+            },
+            error:function(data){
+                if(as){
+                    layer.msg("服务获取失败["+data.errorCode+"]", {
+                        offset: 't',
+                        anim: 0
+                    });
+                    layer.close(index);
+                    istrue=false;
+                    as=false;
+                }
+            }
+        });
+    }
+
+    //时间格式变化 if(sd==1){返回 年月日}else if(sd==2){返回 时分秒}else if(sd==3){返回 时分}else if(sd==4){返回 年月日时分秒}
+    function formatDate(str,sd){
+        var date = new Date(str),Y,M,D,h,m,s;
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = (date.getDate()>=10?date.getDate():"0"+date.getDate()) + ' ';
+        h = (date.getHours()<=0?'00':(date.getHours()>=10?date.getHours():"0"+date.getHours())) + ':';
+        m = (date.getMinutes()<=0?'00':(date.getMinutes()>=10?date.getMinutes():"0"+date.getMinutes())) + ':';
+        s = (date.getSeconds()<=0?'00':(date.getSeconds()>=10?date.getSeconds():"0"+date.getSeconds()));
+        if(sd==1){
+            return (Y+M+D);
+        }else if(sd==2){
+            return (h+m+s);
+        }else if(sd==3){
+            return (h+m);
+        }else if(sd==4){
+            return (Y+M+D+h+m+s);
+        }
+    }
+});
+</script>
+</html>

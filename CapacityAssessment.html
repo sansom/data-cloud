@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link href="./css/animate.min.css" rel="stylesheet">
+    <link href="./css/laydates.css" rel="stylesheet">
+    <link href="./css/laydate.css" rel="stylesheet">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/layer/layer.js"></script>
+</head>
+<style>
+    html,body{
+        height: 100%;
+    }
+    input,select,option,textarea,button{
+        outline:none;
+    }
+    .btn.focus, .btn:focus, .btn:hover{
+        color:#fff;
+    }
+    .form-control:focus{
+        border-color:#1ab394!important;
+        outline:none;
+        box-shadow: none;
+    }
+    .right-content{
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+        overflow: hidden;
+        background: #efefef;
+        padding-bottom: 15px;
+    }
+    .frameTitle{
+        display: block;
+        width: 200px;
+        height: 30px;
+        color: #1ab394;
+        font-size: 16px;
+        line-height: 30px;
+        float:left;
+    }
+    .topBtn{
+        margin: 15px 0;
+        height: auto;
+        overflow: hidden;
+    }
+    .animateBody{
+        width: 100%;
+        height: 100%;
+    }
+    .dataTopo{
+        background:#fff url("./images/grid.png");
+        padding:0;
+        height:100%;
+        overflow: hidden;
+        box-shadow:0 0 4px rgba(0,0,0,0.5);
+        position: relative;
+    }
+    .startStop{
+        height:100%;
+    }
+    .startStop form{
+        background: #fff;
+        height: 100%;
+        padding: 15px;
+        font-size: 12px;
+    }
+    .startStop form .inputArea{
+        width:100%;height:auto;overflow:hidden;
+    }
+    .startStop form .inputArea label{
+        padding:0;
+        width:25%;
+        float:left;
+        line-height:34px;
+        text-align:right;
+        margin-right:5%;
+    }
+    .startStop form .inputArea input{
+        width:70%;
+        float:right;
+    }
+    .startStop .btn{
+        background: #1ab394;
+        color: #fff;
+        margin-top: 15px;
+        width:100%;
+        float:right;
+        border-radius:0;
+        outline:none;
+    }
+    .inputTitle{
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        padding: 0 10px;
+        line-height: 30px;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .meng{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .canvasTitle{
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background:#1ab394;
+        color: #fff;
+    }
+    .canvas{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+</style>
+<body>
+    <div class="right-content">
+        <div class="animateBody">
+            <div class="col-sm-12 topBtn">
+                <span class="frameTitle">容量评估</span>
+            </div>
+            <div class="col-sm-12 left-chunk animated fadeInLeft" style="height:831px;">
+                <div class="col-sm-9 dataTopo">
+                    <canvas class="canvas" id="canvas">您的浏览器版本过低，请升级的的浏览器</canvas>
+                    <div class="canvasTitle">容量评估图</div>
+                    <div class="meng"></div>
+                </div>
+                <div class="col-sm-3 startStop">
+                    <form class="col-sm-12">
+                        <div class="inputTitle">容量评估</div>
+                        <div class="inputArea">
+                            <label class="control-label">Tps:</label>
+                            <input placeholder="请输入Tps" class="form-control" name="Tps" id="Tps">
+                        </div>
+                        <div class="inputArea" style="margin-top:15px;">
+                            <label class="control-label">ThreadCount:</label>
+                            <input placeholder="请输入ThreadCount" class="form-control" name="ThreadCount" id="ThreadCount">
+                        </div>
+                        <div class="btn" style="margin-top:20px" id="start">开始</div>
+                        <div class="btn" id='stop'>暂停</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="./js/jtopo-0.4.8-min.js"></script>
+<script src="./js/Topo1.js"></script>
+</html>
